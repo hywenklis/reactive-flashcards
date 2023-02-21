@@ -5,12 +5,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import br.com.hr.reactiveflashcards.api.controller.request.DeckRequest;
 import br.com.hr.reactiveflashcards.api.controller.response.DeckResponse;
+import br.com.hr.reactiveflashcards.api.controller.response.UserResponse;
 import br.com.hr.reactiveflashcards.api.mapper.DeckMapper;
+import br.com.hr.reactiveflashcards.core.validation.MongoId;
 import br.com.hr.reactiveflashcards.domain.service.DeckService;
 import javax.validation.Valid;
+
+import br.com.hr.reactiveflashcards.domain.service.query.DeckQueryService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +32,7 @@ import reactor.core.publisher.Mono;
 public class DeckController {
   private final DeckService deckService;
   private final DeckMapper deckMapper;
+  private final DeckQueryService deckQueryService;
 
   @PostMapping(consumes = APPLICATION_JSON_VALUE,
                produces = APPLICATION_JSON_VALUE)
@@ -40,14 +47,14 @@ public class DeckController {
         .map(deckMapper::toResponse);
   }
 
-  //  @GetMapping(produces = APPLICATION_JSON_VALUE, value = "{id}")
-  //  public Mono<UserResponse> findById(@PathVariable @Valid @MongoId(
-  //      message = "{userController.id}") final String id) {
-  //    return Mono.just(id)
-  //        .flatMap(userQueryService::findById)
-  //        .doFirst(() -> log.info("Finding a user with follow id {}", id))
-  //        .map(userMapper::toResponse);
-  //  }
+    @GetMapping(produces = APPLICATION_JSON_VALUE, value = "{id}")
+    public Mono<DeckResponse> findById(@PathVariable @Valid @MongoId(
+        message = "{deckController.id}") final String id) {
+      return Mono.just(id)
+          .flatMap(deckQueryService::findById)
+          .doFirst(() -> log.info("Finding a deck with follow id {}", id))
+          .map(deckMapper::toResponse);
+    }
   //
   //  @PutMapping(consumes = APPLICATION_JSON_VALUE,
   //              produces = APPLICATION_JSON_VALUE, value = "{id}")
