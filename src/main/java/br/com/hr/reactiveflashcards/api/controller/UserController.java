@@ -9,9 +9,7 @@ import br.com.hr.reactiveflashcards.api.mapper.UserMapper;
 import br.com.hr.reactiveflashcards.core.validation.MongoId;
 import br.com.hr.reactiveflashcards.domain.service.UserService;
 import br.com.hr.reactiveflashcards.domain.service.query.UserQueryService;
-
 import javax.validation.Valid;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -32,42 +30,44 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserQueryService userQueryService;
-    private final UserService userService;
-    private final UserMapper userMapper;
+  private final UserQueryService userQueryService;
+  private final UserService userService;
+  private final UserMapper userMapper;
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE,
-            produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(CREATED)
-    public Mono<UserResponse>
-    save(@Valid @RequestBody final UserRequest userRequest) {
-        return Mono.just(userRequest)
-                .map(userMapper::toDocument)
-                .flatMap(userService::save)
-                .doFirst(()
-                        -> log.info("Saving a user with follow data {}",
-                        userRequest))
-                .map(userMapper::toResponse);
-    }
+  @PostMapping(consumes = APPLICATION_JSON_VALUE,
+               produces = APPLICATION_JSON_VALUE)
+  @ResponseStatus(CREATED)
+  public Mono<UserResponse>
+  save(@Valid @RequestBody final UserRequest userRequest) {
+    return Mono.just(userRequest)
+        .map(userMapper::toDocument)
+        .flatMap(userService::save)
+        .doFirst(
+            () -> log.info("Saving a user with follow data {}", userRequest))
+        .map(userMapper::toResponse);
+  }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE, value = "{id}")
-    public Mono<UserResponse> findById(@PathVariable @Valid @MongoId(
-            message = "{userController.id}") final String id) {
-        return Mono.just(id)
-                .flatMap(userQueryService::findById)
-                .doFirst(() -> log.info("Finding a user with follow id {}", id))
-                .map(userMapper::toResponse);
-    }
+  @GetMapping(produces = APPLICATION_JSON_VALUE, value = "{id}")
+  public Mono<UserResponse> findById(@PathVariable @Valid @MongoId(
+      message = "{userController.id}") final String id) {
+    return Mono.just(id)
+        .flatMap(userQueryService::findById)
+        .doFirst(() -> log.info("Finding a user with follow id {}", id))
+        .map(userMapper::toResponse);
+  }
 
-    @PutMapping(consumes = APPLICATION_JSON_VALUE,
-            produces = APPLICATION_JSON_VALUE,
-            value = "{id}")
-    public Mono<UserResponse> update(@PathVariable @Valid @MongoId(message = "userController.id") final String id,
-                                     @Valid @RequestBody final UserRequest userRequest) {
-      return Mono.just(userRequest)
-              .zipWith(Mono.just(id), userMapper::toDocument)
-              .flatMap(userService::update)
-              .doFirst(() -> log.info("Updating a user with follow info [body: {}, id: {}]", userRequest, id))
-              .map(userMapper::toResponse);
-    }
+  @PutMapping(consumes = APPLICATION_JSON_VALUE,
+              produces = APPLICATION_JSON_VALUE, value = "{id}")
+  public Mono<UserResponse>
+  update(@PathVariable @Valid @MongoId(message = "userController.id")
+         final String id, @Valid @RequestBody final UserRequest userRequest) {
+    return Mono.just(userRequest)
+        .zipWith(Mono.just(id), userMapper::toDocument)
+        .flatMap(userService::update)
+        .doFirst(()
+                     -> log.info(
+                         "Updating a user with follow info [body: {}, id: {}]",
+                         userRequest, id))
+        .map(userMapper::toResponse);
+  }
 }
