@@ -1,6 +1,10 @@
 package br.com.hr.reactiveflashcards.domain.service;
 
+import static br.com.hr.reactiveflashcards.domain.exception.BaseErrorMessage.EMAIL_ALREADY_USED;
+
 import br.com.hr.reactiveflashcards.domain.document.UserDocument;
+import br.com.hr.reactiveflashcards.domain.exception.EmailAlreadyUsedException;
+import br.com.hr.reactiveflashcards.domain.exception.NotFoundException;
 import br.com.hr.reactiveflashcards.domain.repository.UserRepository;
 import br.com.hr.reactiveflashcards.domain.service.query.UserQueryService;
 import lombok.AllArgsConstructor;
@@ -18,13 +22,15 @@ public class UserService {
 
   public Mono<UserDocument> save(final UserDocument userDocument) {
     return Mono.just(userDocument)
-        .flatMap(userRepository::save)
+        .flatMap(this::verifyEmail)
+        .then(userRepository.save(userDocument))
         .doFirst(() -> log.info("Try to save a follow user {}", userDocument));
   }
 
   public Mono<UserDocument> update(final UserDocument document) {
     return Mono.just(document)
-        .flatMap(userDocument -> userQueryService.findById(userDocument.id()))
+        .flatMap(this::verifyEmail)
+        .then(userQueryService.findById(document.id()))
         .map(user
              -> document.toBuilder()
                     .createdAt(user.createdAt())
@@ -41,5 +47,15 @@ public class UserService {
         .flatMap(userQueryService::findById)
         .flatMap(userRepository::delete)
         .doFirst(() -> log.info("Try to delete a user with follow id {}", id));
+  }
+
+  private Mono<Void> verifyEmail(final UserDocument userDocument) {
+    return Mono.justOrEmpty(userDocument.email())
+        .flatMap(userQueryService::findByEmail)
+        .filter(stored -> stored.id().equals(userDocument.id()))
+        .switchIfEmpty(Mono.error(new EmailAlreadyUsedException(
+            EMAIL_ALREADY_USED.params(userDocument.email()).message())))
+        .onErrorResume(NotFoundException.class, e -> Mono.empty())
+        .then();
   }
 }
