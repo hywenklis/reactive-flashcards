@@ -9,14 +9,14 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface DeckMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    DeckDocument toDocument(final DeckRequest userRequest);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  DeckDocument toDocument(final DeckRequest userRequest);
 
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    DeckDocument toDocument(final DeckRequest userRequest, final String id);
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
+  DeckDocument toDocument(final DeckRequest userRequest, final String id);
 
-    DeckResponse toResponse(final DeckDocument userRequest);
+  DeckResponse toResponse(final DeckDocument userRequest);
 }

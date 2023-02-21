@@ -12,11 +12,11 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class DeckService {
 
-    private final DeckRepository deckRepository;
+  private final DeckRepository deckRepository;
 
-    public Mono<DeckDocument> save(final DeckDocument deckDocument) {
-        return Mono.just(deckDocument)
-                .flatMap(deckRepository::save)
-                .doFirst(() -> log.info("Try to save a follow deck {}", deckDocument));
-    }
+  public Mono<DeckDocument> save(final DeckDocument deckDocument) {
+    return Mono.just(deckDocument)
+        .flatMap(deckRepository::save)
+        .doFirst(() -> log.info("Try to save a follow deck {}", deckDocument));
+  }
 }
