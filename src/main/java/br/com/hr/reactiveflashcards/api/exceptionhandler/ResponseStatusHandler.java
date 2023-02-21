@@ -13,25 +13,22 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 public class ResponseStatusHandler
-        extends AbstractHandlerException<ResponseStatusException> {
+    extends AbstractHandlerException<ResponseStatusException> {
 
-    public ResponseStatusHandler(ObjectMapper objectMapper) {
-        super(objectMapper);
-    }
+  public ResponseStatusHandler(ObjectMapper objectMapper) {
+    super(objectMapper);
+  }
 
-    @Override
-    Mono<Void> handlerException(ServerWebExchange exchange,
-                                ResponseStatusException ex) {
-        return Mono
-                .fromCallable(() -> {
-                    prepareExchange(exchange, NOT_FOUND);
-                    return GENERIC_NOT_FOUND.message();
-                })
-                .map(message -> buildError(NOT_FOUND, message))
-                .doFirst(()
-                        -> log.error(
-                        "ResponseStatusException: ",
-                        ex))
-                .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
-    }
+  @Override
+  Mono<Void> handlerException(ServerWebExchange exchange,
+                              ResponseStatusException ex) {
+    return Mono
+        .fromCallable(() -> {
+          prepareExchange(exchange, NOT_FOUND);
+          return GENERIC_NOT_FOUND.message();
+        })
+        .map(message -> buildError(NOT_FOUND, message))
+        .doFirst(() -> log.error("ResponseStatusException: ", ex))
+        .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
+  }
 }
