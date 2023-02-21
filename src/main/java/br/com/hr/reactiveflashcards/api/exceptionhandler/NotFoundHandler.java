@@ -12,20 +12,25 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 public class NotFoundHandler
-    extends AbstractHandlerException<NotFoundException> {
+        extends AbstractHandlerException<NotFoundException> {
 
-  public NotFoundHandler(ObjectMapper objectMapper) { super(objectMapper); }
+    public NotFoundHandler(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
 
-  @Override
-  Mono<Void> handlerException(ServerWebExchange exchange,
-                              NotFoundException ex) {
-    return Mono
-        .fromCallable(() -> {
-          prepareExchange(exchange, NOT_FOUND);
-          return ex.getMessage();
-        })
-        .map(message -> buildError(NOT_FOUND, message))
-        .doFirst(() -> log.error("NotFoundException: ", ex))
-        .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
-  }
+    @Override
+    Mono<Void> handlerException(ServerWebExchange exchange,
+                                NotFoundException ex) {
+        return Mono
+                .fromCallable(() -> {
+                    prepareExchange(exchange, NOT_FOUND);
+                    return ex.getMessage();
+                })
+                .map(message -> buildError(NOT_FOUND, message))
+                .doFirst(()
+                        -> log.error(
+                        "NotFoundException: ",
+                        ex))
+                .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
+    }
 }

@@ -19,44 +19,44 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 public class WebExchangeBindHandler
-    extends AbstractHandlerException<WebExchangeBindException> {
+        extends AbstractHandlerException<WebExchangeBindException> {
 
-  private final MessageSource messageSource;
+    private final MessageSource messageSource;
 
-  public WebExchangeBindHandler(ObjectMapper objectMapper,
-                                MessageSource messageSource) {
-    super(objectMapper);
-    this.messageSource = messageSource;
-  }
+    public WebExchangeBindHandler(ObjectMapper objectMapper,
+                                  MessageSource messageSource) {
+        super(objectMapper);
+        this.messageSource = messageSource;
+    }
 
-  @Override
-  Mono<Void> handlerException(ServerWebExchange exchange,
-                              WebExchangeBindException ex) {
-    return Mono
-        .fromCallable(() -> {
-          prepareExchange(exchange, BAD_REQUEST);
-          return GENERIC_BAD_REQUEST.message();
-        })
-        .map(message -> buildError(BAD_REQUEST, message))
-        .flatMap(response -> buildParamsErrorMessage(response, ex))
-        .doFirst(() -> log.error("WebExchangeBindException: ", ex))
-        .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
-  }
+    @Override
+    Mono<Void> handlerException(ServerWebExchange exchange,
+                                WebExchangeBindException ex) {
+        return Mono
+                .fromCallable(() -> {
+                    prepareExchange(exchange, BAD_REQUEST);
+                    return GENERIC_BAD_REQUEST.message();
+                })
+                .map(message -> buildError(BAD_REQUEST, message))
+                .flatMap(response -> buildParamsErrorMessage(response, ex))
+                .doFirst(() -> log.error("WebExchangeBindException: ", ex))
+                .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
+    }
 
-  private Mono<ProblemResponse>
-  buildParamsErrorMessage(final ProblemResponse response,
-                          final WebExchangeBindException ex) {
-    return Flux.fromIterable(ex.getAllErrors())
-        .map(objectError
-             -> ErrorFieldResponse.builder()
-                    .name(objectError instanceof FieldError fieldError
-                              ? fieldError.getField()
-                              : objectError.getObjectName())
-                    .message(messageSource.getMessage(
-                        objectError, LocaleContextHolder.getLocale()))
-                    .build())
-        .collectList()
-        .map(problemResponses
-             -> response.toBuilder().fields(problemResponses).build());
-  }
+    private Mono<ProblemResponse>
+    buildParamsErrorMessage(final ProblemResponse response,
+                            final WebExchangeBindException ex) {
+        return Flux.fromIterable(ex.getAllErrors())
+                .map(objectError
+                        -> ErrorFieldResponse.builder()
+                        .name(objectError instanceof FieldError fieldError
+                                ? fieldError.getField()
+                                : objectError.getObjectName())
+                        .message(messageSource.getMessage(
+                                objectError, LocaleContextHolder.getLocale()))
+                        .build())
+                .collectList()
+                .map(problemResponses
+                        -> response.toBuilder().fields(problemResponses).build());
+    }
 }

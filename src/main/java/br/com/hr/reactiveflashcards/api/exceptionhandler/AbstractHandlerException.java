@@ -21,14 +21,14 @@ public abstract class AbstractHandlerException<T extends Exception> {
 
     protected Mono<Void> writeResponse(ServerWebExchange exchange, ProblemResponse problemResponse) {
         return exchange.getResponse()
-                .writeWith(Mono.fromCallable(() -> new DefaultDataBufferFactory()
+                .writeWith(Mono.fromCallable(()
+                        -> new DefaultDataBufferFactory()
                         .wrap(objectMapper.writeValueAsBytes(problemResponse)))
                 );
     }
 
     protected void prepareExchange(final ServerWebExchange exchange, final HttpStatus statusCode) {
-        exchange.getResponse().setStatusCode(statusCode);
-        exchange.getResponse().getHeaders().setContentType(APPLICATION_JSON);
+        exchange.getResponse().setStatusCode(statusCode); exchange.getResponse().getHeaders().setContentType(APPLICATION_JSON);
     }
 
     protected ProblemResponse buildError(final HttpStatus status, String errorDescription) {

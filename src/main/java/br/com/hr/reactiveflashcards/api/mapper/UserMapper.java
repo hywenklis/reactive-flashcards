@@ -9,14 +9,14 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
-  UserDocument toDocument(final UserRequest userRequest);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    UserDocument toDocument(final UserRequest userRequest);
 
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
-  UserDocument toDocument(final UserRequest userRequest, final String id);
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    UserDocument toDocument(final UserRequest userRequest, final String id);
 
-  UserResponse toResponse(final UserDocument userRequest);
+    UserResponse toResponse(final UserDocument userRequest);
 }

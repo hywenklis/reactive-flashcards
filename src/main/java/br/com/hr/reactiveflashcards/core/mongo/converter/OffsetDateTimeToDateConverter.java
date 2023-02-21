@@ -10,6 +10,9 @@ public class OffsetDateTimeToDateConverter implements Converter<Date, OffsetDate
 
     @Override
     public OffsetDateTime convert(Date source) {
-        return OffsetDateTime.ofInstant(source.toInstant(), ZoneId.systemDefault());
+        return OffsetDateTime.ofInstant(
+                source.toInstant(),
+                ZoneId.systemDefault()
+        );
     }
 }

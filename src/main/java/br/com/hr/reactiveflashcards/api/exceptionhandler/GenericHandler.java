@@ -13,17 +13,22 @@ import reactor.core.publisher.Mono;
 @Component
 public class GenericHandler extends AbstractHandlerException<Exception> {
 
-  public GenericHandler(ObjectMapper objectMapper) { super(objectMapper); }
+    public GenericHandler(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
 
-  @Override
-  Mono<Void> handlerException(ServerWebExchange exchange, Exception ex) {
-    return Mono
-        .fromCallable(() -> {
-          prepareExchange(exchange, INTERNAL_SERVER_ERROR);
-          return GENERIC_EXCEPTION.message();
-        })
-        .map(message -> buildError(INTERNAL_SERVER_ERROR, message))
-        .doFirst(() -> log.error("Exception: ", ex))
-        .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
-  }
+    @Override
+    Mono<Void> handlerException(ServerWebExchange exchange, Exception ex) {
+        return Mono
+                .fromCallable(() -> {
+                    prepareExchange(exchange, INTERNAL_SERVER_ERROR);
+                    return GENERIC_EXCEPTION.message();
+                })
+                .map(message -> buildError(INTERNAL_SERVER_ERROR, message))
+                .doFirst(()
+                        -> log.error(
+                        "Exception: ",
+                        ex))
+                .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
+    }
 }

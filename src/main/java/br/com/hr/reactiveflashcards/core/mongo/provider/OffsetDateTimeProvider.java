@@ -14,6 +14,8 @@ public class OffsetDateTimeProvider implements DateTimeProvider {
 
     @Override
     public Optional<TemporalAccessor> getNow() {
-        return Optional.of(OffsetDateTime.now(UTC));
+        return Optional.of(
+                OffsetDateTime.now(UTC)
+        );
     }
 }
