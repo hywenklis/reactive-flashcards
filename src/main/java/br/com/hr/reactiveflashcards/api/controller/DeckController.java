@@ -9,9 +9,8 @@ import br.com.hr.reactiveflashcards.api.controller.response.UserResponse;
 import br.com.hr.reactiveflashcards.api.mapper.DeckMapper;
 import br.com.hr.reactiveflashcards.core.validation.MongoId;
 import br.com.hr.reactiveflashcards.domain.service.DeckService;
-import javax.validation.Valid;
-
 import br.com.hr.reactiveflashcards.domain.service.query.DeckQueryService;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -47,14 +46,14 @@ public class DeckController {
         .map(deckMapper::toResponse);
   }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE, value = "{id}")
-    public Mono<DeckResponse> findById(@PathVariable @Valid @MongoId(
-        message = "{deckController.id}") final String id) {
-      return Mono.just(id)
-          .flatMap(deckQueryService::findById)
-          .doFirst(() -> log.info("Finding a deck with follow id {}", id))
-          .map(deckMapper::toResponse);
-    }
+  @GetMapping(produces = APPLICATION_JSON_VALUE, value = "{id}")
+  public Mono<DeckResponse> findById(@PathVariable @Valid @MongoId(
+      message = "{deckController.id}") final String id) {
+    return Mono.just(id)
+        .flatMap(deckQueryService::findById)
+        .doFirst(() -> log.info("Finding a deck with follow id {}", id))
+        .map(deckMapper::toResponse);
+  }
   //
   //  @PutMapping(consumes = APPLICATION_JSON_VALUE,
   //              produces = APPLICATION_JSON_VALUE, value = "{id}")

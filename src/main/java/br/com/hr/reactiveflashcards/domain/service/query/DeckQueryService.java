@@ -1,16 +1,15 @@
 package br.com.hr.reactiveflashcards.domain.service.query;
 
+import static br.com.hr.reactiveflashcards.domain.exception.BaseErrorMessage.DECK_NOT_FOUND;
+
 import br.com.hr.reactiveflashcards.domain.document.DeckDocument;
 import br.com.hr.reactiveflashcards.domain.exception.NotFoundException;
 import br.com.hr.reactiveflashcards.domain.repository.DeckRepository;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
-import java.util.Objects;
-
-import static br.com.hr.reactiveflashcards.domain.exception.BaseErrorMessage.DECK_NOT_FOUND;
 
 @Service
 @Slf4j
