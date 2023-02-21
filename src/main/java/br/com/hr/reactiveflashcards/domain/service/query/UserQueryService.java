@@ -26,6 +26,17 @@ public class UserQueryService {
         .switchIfEmpty(
             Mono.defer(()
                            -> Mono.error(new NotFoundException(
-                               USER_NOT_FOUND.params(id).message()))));
+                               USER_NOT_FOUND.params("id", id).message()))));
+  }
+
+  public Mono<UserDocument> findByEmail(final String email) {
+    return Mono.just(email)
+            .flatMap(userRepository::findByEmail)
+            .doFirst(() -> log.info("Try to find user with email {}", email))
+            .filter(Objects::nonNull)
+            .switchIfEmpty(
+                    Mono.defer(()
+                            -> Mono.error(new NotFoundException(
+                            USER_NOT_FOUND.params("email", email).message()))));
   }
 }
