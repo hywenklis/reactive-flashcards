@@ -22,6 +22,8 @@ public class BaseErrorMessage {
       new BaseErrorMessage("generic.badRequest");
   public static final BaseErrorMessage USER_NOT_FOUND =
       new BaseErrorMessage("user.NotFound");
+  public static final BaseErrorMessage DECK_NOT_FOUND =
+      new BaseErrorMessage("deck.NotFound");
 
   public BaseErrorMessage params(final String... params) {
     this.params = ArrayUtils.clone(params);
