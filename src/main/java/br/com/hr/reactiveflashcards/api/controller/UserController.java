@@ -1,6 +1,7 @@
 package br.com.hr.reactiveflashcards.api.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import br.com.hr.reactiveflashcards.api.controller.request.UserRequest;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,5 +71,14 @@ public class UserController {
                          "Updating a user with follow info [body: {}, id: {}]",
                          userRequest, id))
         .map(userMapper::toResponse);
+  }
+
+  @DeleteMapping("{id}")
+  @ResponseStatus(NO_CONTENT)
+  public Mono<Void> delete(@PathVariable @Valid @MongoId(
+      message = "userController.id") final String id) {
+    return Mono.just(id)
+        .flatMap(userService::delete)
+        .doFirst(() -> log.info("Deleting a user with follow id {}", id));
   }
 }

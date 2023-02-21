@@ -7,6 +7,6 @@ public record UserResponse(@JsonProperty("id") String id,
                            @JsonProperty("name") String name,
                            @JsonProperty("email") String email) {
 
-    @Builder(toBuilder = true)
-    public UserResponse {}
+  @Builder(toBuilder = true)
+  public UserResponse {}
 }
