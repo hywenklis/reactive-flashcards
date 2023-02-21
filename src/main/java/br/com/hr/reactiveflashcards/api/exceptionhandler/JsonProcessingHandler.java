@@ -24,7 +24,7 @@ public class JsonProcessingHandler extends AbstractHandlerException<JsonProcessi
                     prepareExchange(exchange, METHOD_NOT_ALLOWED);
                     return GENERIC_METHOD_NOT_ALLOW.message();
                 }).map(message -> buildError(METHOD_NOT_ALLOWED, message))
-                .doFirst(() -> log.error("=== JsonProcessingException: Failed to map exception for the request {} ",
+                .doFirst(() -> log.error("JsonProcessingException: Failed to map exception for the request {} ",
                         exchange.getRequest().getPath().value(), ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }

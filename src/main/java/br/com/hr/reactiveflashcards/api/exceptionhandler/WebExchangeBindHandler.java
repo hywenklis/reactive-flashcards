@@ -34,7 +34,7 @@ public class WebExchangeBindHandler extends AbstractHandlerException<WebExchange
                     return GENERIC_BAD_REQUEST.message();
                 }).map(message -> buildError(BAD_REQUEST, message))
                 .flatMap(response -> buildParamsErrorMessage(response, ex))
-                .doFirst(() -> log.error("=== WebExchangeBindException", ex))
+                .doFirst(() -> log.error("WebExchangeBindException: ", ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }
 

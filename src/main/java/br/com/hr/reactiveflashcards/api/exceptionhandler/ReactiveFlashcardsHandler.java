@@ -24,7 +24,7 @@ public class ReactiveFlashcardsHandler extends AbstractHandlerException<Reactive
                     prepareExchange(exchange, INTERNAL_SERVER_ERROR);
                     return GENERIC_EXCEPTION.message();
                 }).map(message -> buildError(INTERNAL_SERVER_ERROR, message))
-                .doFirst(() -> log.error("=== ReactiveFlashcardsException: ", ex))
+                .doFirst(() -> log.error("ReactiveFlashcardsException: ", ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }
 }

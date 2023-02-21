@@ -30,7 +30,7 @@ public class ConstraintViolationHandler extends AbstractHandlerException<Constra
                     return GENERIC_BAD_REQUEST.message();
                 }).map(message -> buildError(BAD_REQUEST, message))
                 .flatMap(response -> buildParamsErrorMessage(response, ex))
-                .doFirst(() -> log.error("=== ConstraintViolationException", ex))
+                .doFirst(() -> log.error("ConstraintViolationException: ", ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }
 

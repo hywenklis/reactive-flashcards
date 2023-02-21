@@ -23,7 +23,7 @@ public class NotFoundHandler extends AbstractHandlerException<NotFoundException>
                     prepareExchange(exchange, NOT_FOUND);
                     return ex.getMessage();
                 }).map(message -> buildError(NOT_FOUND, message))
-                .doFirst(() -> log.error("=== NotFoundException", ex))
+                .doFirst(() -> log.error("NotFoundException: ", ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }
 }

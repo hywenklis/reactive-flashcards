@@ -21,7 +21,7 @@ public class UserQueryService {
   public Mono<UserDocument> findById(final String id) {
     return Mono.just(id)
         .flatMap(userRepository::findById)
-        .doFirst(() -> log.info("=== Try to find user with id {}", id))
+        .doFirst(() -> log.info("Try to find user with id {}", id))
         .filter(Objects::nonNull)
         .switchIfEmpty(
             Mono.defer(()

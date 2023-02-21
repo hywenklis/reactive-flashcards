@@ -24,7 +24,7 @@ public class ResponseStatusHandler extends AbstractHandlerException<ResponseStat
                     prepareExchange(exchange, NOT_FOUND);
                     return GENERIC_NOT_FOUND.message();
                 }).map(message -> buildError(NOT_FOUND, message))
-                .doFirst(() -> log.error("=== ResponseStatusException", ex))
+                .doFirst(() -> log.error("ResponseStatusException: ", ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }
 }

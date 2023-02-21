@@ -23,7 +23,7 @@ public class GenericHandler extends AbstractHandlerException<Exception>{
                     prepareExchange(exchange, INTERNAL_SERVER_ERROR);
                     return GENERIC_EXCEPTION.message();
                 }).map(message -> buildError(INTERNAL_SERVER_ERROR, message))
-                .doFirst(() -> log.error("=== Exception: ", ex))
+                .doFirst(() -> log.error("Exception: ", ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }
 }

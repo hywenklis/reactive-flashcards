@@ -26,7 +26,7 @@ public class MethodNotAllowedHandler extends AbstractHandlerException<MethodNotA
                     prepareExchange(exchange, METHOD_NOT_ALLOWED);
                     return GENERIC_METHOD_NOT_ALLOW.params(Objects.requireNonNull(exchange.getRequest().getMethod()).name()).message();
                 }).map(message -> buildError(METHOD_NOT_ALLOWED, message))
-                .doFirst(() -> log.error("=== MethodNotAllowedException: Method [{}] is not allowed at [{}]",
+                .doFirst(() -> log.error("MethodNotAllowedException: Method [{}] is not allowed at [{}]",
                         exchange.getRequest().getMethod(), exchange.getRequest().getPath().value(), ex))
                 .flatMap(problemResponse -> writeResponse(exchange, problemResponse));
     }
