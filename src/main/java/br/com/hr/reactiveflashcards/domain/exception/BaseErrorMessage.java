@@ -25,7 +25,7 @@ public class BaseErrorMessage {
   public static final BaseErrorMessage DECK_NOT_FOUND =
       new BaseErrorMessage("deck.NotFound");
   public static final BaseErrorMessage EMAIL_ALREADY_USED =
-          new BaseErrorMessage("user.EmailAlreadyUsed");
+      new BaseErrorMessage("user.EmailAlreadyUsed");
 
   public BaseErrorMessage params(final String... params) {
     this.params = ArrayUtils.clone(params);
