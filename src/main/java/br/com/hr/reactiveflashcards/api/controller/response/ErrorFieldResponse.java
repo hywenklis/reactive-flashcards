@@ -2,11 +2,8 @@ package br.com.hr.reactiveflashcards.api.controller.response;
 
 import lombok.Builder;
 
-public record ErrorFieldResponse(
-        String name,
-        String message
-) {
+public record ErrorFieldResponse(String name, String message) {
 
-    @Builder(toBuilder = true)
-    public ErrorFieldResponse {}
+  @Builder(toBuilder = true)
+  public ErrorFieldResponse {}
 }
