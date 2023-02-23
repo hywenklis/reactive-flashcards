@@ -9,6 +9,7 @@ import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -27,5 +28,9 @@ public class DeckQueryService {
             Mono.defer(()
                            -> Mono.error(new NotFoundException(
                                DECK_NOT_FOUND.params(id).message()))));
+  }
+
+  public Flux<DeckDocument> findAll() {
+    return deckRepository.findAll();
   }
 }
