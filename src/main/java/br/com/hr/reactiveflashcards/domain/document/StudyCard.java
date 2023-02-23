@@ -5,10 +5,7 @@ import lombok.NoArgsConstructor;
 
 public record StudyCard(String front, String back) {
 
-
-  public static StudyCardBuilder builder() {
-    return new StudyCardBuilder();
-  }
+  public static StudyCardBuilder builder() { return new StudyCardBuilder(); }
 
   public StudyCardBuilder toBuilder() {
     return new StudyCardBuilder(front, back);
@@ -30,9 +27,6 @@ public record StudyCard(String front, String back) {
       return this;
     }
 
-    public StudyCard build() {
-      return new StudyCard(front, back);
-    }
-
+    public StudyCard build() { return new StudyCard(front, back); }
   }
 }
