@@ -30,7 +30,5 @@ public class DeckQueryService {
                                DECK_NOT_FOUND.params(id).message()))));
   }
 
-  public Flux<DeckDocument> findAll() {
-    return deckRepository.findAll();
-  }
+  public Flux<DeckDocument> findAll() { return deckRepository.findAll(); }
 }
