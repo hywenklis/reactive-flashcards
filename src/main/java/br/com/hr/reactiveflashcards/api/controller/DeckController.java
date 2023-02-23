@@ -5,7 +5,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import br.com.hr.reactiveflashcards.api.controller.request.DeckRequest;
 import br.com.hr.reactiveflashcards.api.controller.response.DeckResponse;
-import br.com.hr.reactiveflashcards.api.controller.response.UserResponse;
 import br.com.hr.reactiveflashcards.api.mapper.DeckMapper;
 import br.com.hr.reactiveflashcards.core.validation.MongoId;
 import br.com.hr.reactiveflashcards.domain.service.DeckService;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Validated
@@ -52,6 +52,13 @@ public class DeckController {
     return Mono.just(id)
         .flatMap(deckQueryService::findById)
         .doFirst(() -> log.info("Finding a deck with follow id {}", id))
+        .map(deckMapper::toResponse);
+  }
+
+  @GetMapping(produces = APPLICATION_JSON_VALUE)
+  public Flux<DeckResponse> findAll() {
+    return deckQueryService.findAll()
+        .doFirst(() -> log.info("Finding list decks"))
         .map(deckMapper::toResponse);
   }
   //
