@@ -1,22 +1,17 @@
 package br.com.hr.reactiveflashcards.domain.document;
 
+import br.com.hr.reactiveflashcards.domain.document.StudyDocument.StudyDocumentBuilder;
 import java.util.HashSet;
 import java.util.Set;
-
-import br.com.hr.reactiveflashcards.domain.document.StudyDocument.StudyDocumentBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 public record StudyDeck(String deckId, Set<StudyCard> cards) {
 
-  public static StudyDeckBuilder builder() {
-    return new StudyDeckBuilder();
-  }
+  public static StudyDeckBuilder builder() { return new StudyDeckBuilder(); }
 
-  public StudyDeckBuilder toBuilder() {
-    return new StudyDeckBuilder();
-  }
+  public StudyDeckBuilder toBuilder() { return new StudyDeckBuilder(); }
 
   @NoArgsConstructor
   @AllArgsConstructor
@@ -34,8 +29,6 @@ public record StudyDeck(String deckId, Set<StudyCard> cards) {
       return this;
     }
 
-    public StudyDeck build() {
-      return new StudyDeck(deckId, cards);
-    }
+    public StudyDeck build() { return new StudyDeck(deckId, cards); }
   }
 }

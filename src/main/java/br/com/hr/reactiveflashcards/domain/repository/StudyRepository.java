@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface StudyRepository extends ReactiveMongoRepository<StudyDocument, String> {
+public interface StudyRepository
+    extends ReactiveMongoRepository<StudyDocument, String> {
 
-    Mono<StudyDocument> findByStudyDeckDeckId(final String deckId);
+  Mono<StudyDocument> findByStudyDeckDeckId(final String deckId);
 }
